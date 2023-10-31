@@ -7,7 +7,7 @@
 4. [Section 2](#section-2)
 5. [Conclusion](#conclusion) -->
 
-# Feedback | Group 1
+# Feedback | Group 2
 
 ## Milestone 1 | 2Oct-13Oct
 
@@ -37,7 +37,7 @@ By the end of the Milestone 2, you must complete the tasks mentioned above. Feel
 - Add high-level tasks for DB developer (this one you will find on Milestone 2  as well)
 - Fix requirements.txt 
 
-Grade 5/10
+**Grade:** 5/10
 
 
 # Milestone 2 | 16Oct-27Oct
@@ -92,7 +92,7 @@ Fix folders and their relationships.
 
 If you manage the complete the above points by Friday(before the class) you will get **20/20** 
 
-**10/10**
+**Grade:** 10/20
 
 
 # Milestone 3 | 30Oct-10Nov
