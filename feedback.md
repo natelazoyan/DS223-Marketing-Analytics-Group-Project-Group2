@@ -88,7 +88,7 @@ In order to improve you performance I would recommend:
 
 By the end of the 3rd Milestone you must:
 
-Fix folders and their relationships 
+Fix folders and their relationships. 
 
 If you manage the complete the above points by Friday(before the class) you will get **20/20** 
 
@@ -111,6 +111,3 @@ If you manage the complete the above points by Friday(before the class) you will
     - finalize the documentation for `SQLHandler()` by using `pyment` package
 5. **Data Scientist:** start working on modeling part, by selecting the date from SQL DB
     - we just need to run sample model and store the output to sql
-
-
-
