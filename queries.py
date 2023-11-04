@@ -1,4 +1,4 @@
-from etl.data_preparation import SqlHandler
+from CLV_Analysis.DB.sql_interactions import SqlHandler
 
 Inst = SqlHandler('temp', ['sales_fact','transactions','customer','property','agent','date'])
 
