@@ -138,9 +138,10 @@ class SqlHandler:
         try:
             db_cursor.execute(query)
             selected_data = db_cursor.fetchone()
-            return {"message": f'Id {id} selected successfully', "data": selected_data}
+            logger.info(f'Id {id} selected successfully') 
+            return {"data": selected_data}
         except Exception as e:
-            return {"message": f"Error selecting id: {str(e)}"}
+            logger.info(f"Error selecting id: {str(e)}")
         
 
     def select_many(start_id: int, head: int, db_name: str, table_name: str, table_id: str):
@@ -160,9 +161,10 @@ class SqlHandler:
                 result = dict(row)
                 results.append(result)
     
-            return {"message": f"Rows starting from ID {start_id} selected successfully", "data": results}
+            logger.info(f"Rows starting from ID {start_id} selected successfully")
+            return {"data": results}
         except Exception as e:
-            return {"error": f"Error selecting rows: {str(e)}"}
+            logger.info(f"Error selecting rows: {str(e)}")
 
 
     def delete_by_id(id: int, db_name: str, table_name: str, table_id: str):
@@ -175,9 +177,9 @@ class SqlHandler:
         try:
             db_cursor.execute(query)
             db.commit()
-            return {"message": f'Id {id} deleted successfully'}
+            logger.info(f'Id {id} deleted successfully')
         except Exception as e:
-            return {"message": f"Error deleting id: {str(e)}"}
+            logger.info(f"Error deleting id: {str(e)}")
     
 
     def update_by_id(id: int, update_values: dict, db_name: str, table_name: str, table_id: str):
@@ -195,9 +197,9 @@ class SqlHandler:
             db_cursor.execute(query)
             db.commit()
             db.close()
-            return {"message": f'Row with ID {id} updated successfully for specified columns'}
+            logger.info(f'Row with ID {id} updated successfully for specified columns')
         except Exception as e:
-            return {"message": f"Error updating row: {str(e)}"}
+            logger.info(f"Error updating row: {str(e)}")
         
     
     def insert_by_id(insert_values: dict, db_name: str, table_name: str):
@@ -216,9 +218,9 @@ class SqlHandler:
             db_cursor.execute(query)
             db.commit()
             db.close()
-            return {"message": 'Row inserted successfully'}
+            logger.info('Row inserted successfully')
         except Exception as e:
-            return {"message": f"Error inserting row: {str(e)}"}
+            logger.info(f"Error inserting row: {str(e)}")
 
         
     def execute_custom_query(self, query, conn_string = 'temp.db'):
