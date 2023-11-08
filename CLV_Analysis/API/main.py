@@ -1,7 +1,5 @@
 from fastapi import FastAPI, HTTPException
-import sqlite3
 from ..DB import sql_interactions 
-from ..DB.schema import Sale, Property, Customer, Agent, Transaction, Date
 from .models import (
     SalesFactCreate, SalesFactUpdate,
     PropertyCreate, PropertyUpdate,
