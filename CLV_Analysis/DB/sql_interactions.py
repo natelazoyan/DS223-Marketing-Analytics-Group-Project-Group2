@@ -27,10 +27,8 @@ class SqlHandler:
         self.cnxn.close()
         logger.info('the connection has been closed')
 
-    def insert_one()->None:
-        pass
-
     def get_table_columns(self)->list:
+
         self.cursor.execute(f"PRAGMA table_info({self.table_name});")
         columns = self.cursor.fetchall()
         
@@ -104,10 +102,7 @@ class SqlHandler:
 
 
     def from_sql_to_pandas(self, chunksize:int, id_value:str) -> pd.DataFrame:
-        """
-
-        """
-        
+ 
         offset=0
         dfs=[]
        
@@ -132,28 +127,99 @@ class SqlHandler:
         return df
 
 
-    def update_table(self,values,condition):
-        columns = list(values.keys())
-        set_clause = ', '.join([f"{column} = '{values[column]}'" for column in columns])
-        condition = f"{condition.column} = '{condition.value}'"
-        query = f"""
-        UPDATE {self.table_name}
-        SET {set_clause}
-        WHERE {condition};
-        """
-        self.cursor.execute(query)
-        self.cnxn.commit()
-        logger.info(f'Updated {self.table_name} with values: {values} where {condition}')
+    def select_by_id(id: int, db_name: str, table_name: str, table_id: str):
+        db = sqlite3.connect(db_name)
+        db.row_factory = sqlite3.Row  # Return rows as dictionaries
+        db_cursor = db.cursor()
 
-    def delete_from_table(self, condition_column, condition_value):
-        condition = f"{condition_column} = '{condition_value}'"
-        query = f"""s
-        DELETE FROM {self.table_name}
-        WHERE {condition};
+        query = f"""
+        SELECT * FROM {table_name} WHERE {table_id} = {id};
         """
-        self.cursor.execute(query)
-        self.cnxn.commit()
-        logger.info(f'Deleted rows from {self.table_name} where {condition}')
+        try:
+            db_cursor.execute(query)
+            selected_data = db_cursor.fetchone()
+            return {"message": f'Id {id} selected successfully', "data": selected_data}
+        except Exception as e:
+            return {"message": f"Error selecting id: {str(e)}"}
+        
+
+    def select_many(start_id: int, head: int, db_name: str, table_name: str, table_id: str):
+        db = sqlite3.connect(db_name)
+        db.row_factory = sqlite3.Row  # Return rows as dictionaries
+        db_cursor = db.cursor()
+
+        query = f"""
+        SELECT * FROM {table_name} WHERE {table_id} >= {start_id} LIMIT {head+1};
+        """
+        try:
+            db_cursor.execute(query)
+            selected_data = db_cursor.fetchall()
+
+            results = []
+            for row in selected_data:
+                result = dict(row)
+                results.append(result)
+    
+            return {"message": f"Rows starting from ID {start_id} selected successfully", "data": results}
+        except Exception as e:
+            return {"error": f"Error selecting rows: {str(e)}"}
+
+
+    def delete_by_id(id: int, db_name: str, table_name: str, table_id: str):
+        db = sqlite3.connect(db_name)
+        db_cursor = db.cursor()
+        query = f"""
+        DELETE FROM {table_name}
+        WHERE {table_id} = {id};
+        """
+        try:
+            db_cursor.execute(query)
+            db.commit()
+            return {"message": f'Id {id} deleted successfully'}
+        except Exception as e:
+            return {"message": f"Error deleting id: {str(e)}"}
+    
+
+    def update_by_id(id: int, update_values: dict, db_name: str, table_name: str, table_id: str):
+
+        db = sqlite3.connect(db_name)
+        db_cursor = db.cursor()
+
+        # Construct the SQL query with embedded values for the specified columns
+        update_values = update_values.model_dump(exclude_unset=True, exclude_defaults=True, exclude_none=True)
+        columns_to_update = ", ".join([f"{column} = '{update_values[column]}'" for column in update_values.keys()])
+        query = f"""UPDATE {table_name} 
+                    SET {columns_to_update}
+                    WHERE {table_id} = '{id}'"""
+        try:
+            db_cursor.execute(query)
+            db.commit()
+            db.close()
+            return {"message": f'Row with ID {id} updated successfully for specified columns'}
+        except Exception as e:
+            return {"message": f"Error updating row: {str(e)}"}
+        
+    
+    def insert_by_id(insert_values: dict, db_name: str, table_name: str):
+        db = sqlite3.connect(db_name)
+        db_cursor = db.cursor()
+
+        insert_values = insert_values.model_dump(exclude_unset=True, exclude_defaults=True, exclude_none=True)
+
+        columns = ', '.join(insert_values.keys())
+        values = ', '.join([f"'{value}'" for value in insert_values.values()])
+
+        query = f"""INSERT INTO {table_name} ({columns})
+                    VALUES ({values})"""
+
+        try:
+            db_cursor.execute(query)
+            db.commit()
+            db.close()
+            return {"message": 'Row inserted successfully'}
+        except Exception as e:
+            return {"message": f"Error inserting row: {str(e)}"}
+
         
     def execute_custom_query(self, query, conn_string = 'temp.db'):
         conn = sqlite3.connect(conn_string)
