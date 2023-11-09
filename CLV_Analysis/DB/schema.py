@@ -18,6 +18,7 @@ engine = create_engine('sqlite:///temp.db')
 Base = declarative_base()
 
 class Property(Base):
+    """Represents a property in the real estate system."""
     __tablename__ = "property"
 
     property_id = Column(Integer, primary_key=True)
@@ -32,6 +33,7 @@ class Property(Base):
     year_built = Column(Integer)
 
 class Customer(Base):
+    """Represents a customer in the real estate system."""
     __tablename__ = "customer"
 
     customer_id = Column(Integer, primary_key=True)
@@ -47,6 +49,7 @@ class Customer(Base):
     gender = Column(String)
 
 class Agent(Base):
+    """Represents an agent in the real estate system."""
     __tablename__ = "agent"
 
     agent_id = Column(Integer, primary_key=True)
@@ -57,6 +60,7 @@ class Agent(Base):
     experience_years = Column(Integer)
 
 class Transaction(Base):
+    """Represents a transaction in the real estate system."""
     __tablename__ = "transactions"
 
     transaction_id = Column(Integer, primary_key=True)
@@ -65,6 +69,7 @@ class Transaction(Base):
     payment_method = Column(String)
 
 class Date(Base):
+    """Represents a date in the real estate system."""
     __tablename__ = "date"
 
     date_id = Column(Integer, primary_key=True)
@@ -82,6 +87,7 @@ class Date(Base):
     
 
 class Sale(Base):
+    """Represents a sale in the real estate system."""
     __tablename__ = "sales_fact"
 
     sales_id = Column(Integer, primary_key=True)

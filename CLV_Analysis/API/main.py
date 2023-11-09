@@ -13,6 +13,8 @@ app = FastAPI()
 
 ###############################################################################################################
 
+### Sales Fact API Methods
+
 @app.post("/sales_fact/")
 async def create_sales_fact(insert_values: SalesFactCreate):
     try:
@@ -56,6 +58,8 @@ async def delete_sales_fact(sales_fact_id: int):
 
 ###############################################################################################################
 
+### Property API Methods
+
 @app.post("/property/")
 async def create_property(insert_values: PropertyCreate):
     try:
@@ -98,6 +102,8 @@ async def delete_property(property_id: int):
 
 ###############################################################################################################
 
+### Customer API Methods
+
 @app.post("/customer/")
 async def create_customer(insert_values: CustomerCreate):
     try:
@@ -138,7 +144,9 @@ async def delete_customer(customer_id: int):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
-# ###############################################################################################################
+################################################################################################################
+
+### Agent API Methods
 
 @app.post("/agent/")
 async def create_agent(insert_values: AgentCreate):
@@ -180,7 +188,9 @@ async def delete_agent(agent_id: int):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
-# ###############################################################################################################
+################################################################################################################
+
+### Transaction API Methods
 
 @app.post("/transaction/")
 async def create_transaction(insert_values: TransactionCreate):
@@ -222,7 +232,9 @@ async def delete_transaction(transaction_id: int):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
-# ###############################################################################################################
+################################################################################################################
+
+### Date API Methods
 
 @app.post("/date/")
 async def create_date(insert_values: DateCreate):
@@ -264,4 +276,4 @@ async def delete_date(date_id: int):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
-# ###############################################################################################################
+################################################################################################################
