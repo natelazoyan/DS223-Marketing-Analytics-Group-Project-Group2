@@ -64,18 +64,18 @@ class SqlHandler:
         # self.cursor.close()
 
     def drop_table(self):
-    """
-    Drops the specified table from the database.
+        """
+        Drops the specified table from the database.
 
-    This method executes an SQL query to drop the table specified by the 'table_name' attribute.
-    
-    Raises:
-        Exception: If an error occurs while dropping the table.
+        This method executes an SQL query to drop the table specified by the 'table_name' attribute.
         
-    Note:
-        - Ensure that the 'table_name' attribute is properly set before calling this method.
-        - This operation is irreversible and permanently deletes the specified table.
-    """
+        Raises:
+            Exception: If an error occurs while dropping the table.
+            
+        Note:
+            - Ensure that the 'table_name' attribute is properly set before calling this method.
+            - This operation is irreversible and permanently deletes the specified table.
+        """
         query = f"DROP TABLE IF EXISTS {self.table_name};"
         logging.info(query)
 
