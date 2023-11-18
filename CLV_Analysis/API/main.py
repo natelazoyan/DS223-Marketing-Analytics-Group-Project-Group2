@@ -2,9 +2,8 @@ from fastapi import FastAPI, HTTPException
 from ..DB import sql_interactions 
 from .models import (
     SalesFactCreate, SalesFactUpdate,
-    PropertyCreate, PropertyUpdate,
+    ProductCreate, ProductUpdate,
     CustomerCreate, CustomerUpdate,
-    AgentCreate, AgentUpdate,
     TransactionCreate, TransactionUpdate,
     DateCreate, DateUpdate
 )
@@ -58,45 +57,45 @@ async def delete_sales_fact(sales_fact_id: int):
 
 ###############################################################################################################
 
-### Property API Methods
+### Product API Methods
 
-@app.post("/property/")
-async def create_property(insert_values: PropertyCreate):
+@app.post("/product/")
+async def create_product(insert_values: ProductCreate):
     try:
-        db_property = sql_interactions.SqlHandler.insert_by_id(insert_values, db_name = "temp.db", table_name= "property")
-        return db_property
+        db_product = sql_interactions.SqlHandler.insert_by_id(insert_values, db_name = "temp.db", table_name= "product")
+        return db_product
     except Exception as e:
         return {"error": f"Internal Server Error: {str(e)}"}
 
-@app.get("/property/")
-async def select_properties(start_id: int, head: int):
+@app.get("/product/")
+async def select_products(start_id: int, head: int):
      try:
-         db_properties = sql_interactions.SqlHandler.select_many(start_id, head, db_name = "temp.db", table_name = "property", table_id = "property_id")
-         return db_properties
+         db_products = sql_interactions.SqlHandler.select_many(start_id, head, db_name = "temp.db", table_name = "product", table_id = "product_id")
+         return db_products
      except Exception as e:
         return {"error": f"Internal Server Error: {str(e)}"}
 
-@app.get("/property/{property_id}")
-async def select_property(property_id: int):
+@app.get("/product/{product_id}")
+async def select_product(product_id: int):
      try:
-         db_property = sql_interactions.SqlHandler.select_by_id(property_id, db_name = "temp.db", table_name= 'property', table_id = "property_id")
-         return db_property
+         db_product = sql_interactions.SqlHandler.select_by_id(product_id, db_name = "temp.db", table_name= 'product', table_id = "product_id")
+         return db_product
      except Exception as e:
         return {"error": f"Internal Server Error: {str(e)}"}
 
-@app.put("/property/{property_id}")
-async def update_property(row_id: int, update_data: PropertyUpdate):
+@app.put("/product/{product_id}")
+async def update_product(row_id: int, update_data: ProductUpdate):
     try:
-      result = sql_interactions.SqlHandler.update_by_id(row_id, update_data, db_name="temp.db", table_name="property", table_id="property_id")
+      result = sql_interactions.SqlHandler.update_by_id(row_id, update_data, db_name="temp.db", table_name="product", table_id="product_id")
       return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
-@app.delete("/property/{property_id}")
-async def delete_property(property_id: int):
+@app.delete("/product/{product_id}")
+async def delete_product(product_id: int):
     try:
-        db_property = sql_interactions.SqlHandler.delete_by_id(property_id, db_name = "temp.db", table_name= 'property', table_id = "property_id")
-        return db_property
+        db_product = sql_interactions.SqlHandler.delete_by_id(product_id, db_name = "temp.db", table_name= 'product', table_id = "product_id")
+        return db_product
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
@@ -141,50 +140,6 @@ async def delete_customer(customer_id: int):
     try:
         db_customer = sql_interactions.SqlHandler.delete_by_id(customer_id, db_name = "temp.db", table_name= 'customer', table_id = "customer_id")
         return db_customer
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
-
-################################################################################################################
-
-### Agent API Methods
-
-@app.post("/agent/")
-async def create_agent(insert_values: AgentCreate):
-    try:
-        db_agent = sql_interactions.SqlHandler.insert_by_id(insert_values, db_name = "temp.db", table_name= "agent")
-        return db_agent
-    except Exception as e:
-        return {"error": f"Internal Server Error: {str(e)}"}
-
-@app.get("/agent/")
-async def select_agents(start_id: int, head: int):
-     try:
-         db_agents = sql_interactions.SqlHandler.select_many(start_id, head, db_name = "temp.db", table_name = "agent", table_id = "agent_id")
-         return db_agents
-     except Exception as e:
-        return {"error": f"Internal Server Error: {str(e)}"}
-
-@app.get("/agent/{agent_id}")
-async def select_agent(agent_id: int):
-     try:
-         db_agent = sql_interactions.SqlHandler.select_by_id(agent_id, db_name = "temp.db", table_name= 'agent', table_id = "agent_id")
-         return db_agent
-     except Exception as e:
-        return {"error": f"Internal Server Error: {str(e)}"}
-
-@app.put("/agent/{agent_id}")
-async def update_agent(row_id: int, update_data: AgentUpdate):
-    try:
-      result = sql_interactions.SqlHandler.update_by_id(row_id, update_data, db_name="temp.db", table_name="agent", table_id="agent_id")
-      return result
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
-
-@app.delete("/agent/{agent_id}")
-async def delete_agent(agent_id: int):
-    try:
-        db_agent = sql_interactions.SqlHandler.delete_by_id(agent_id, db_name = "temp.db", table_name= 'agent', table_id = "agent_id")
-        return db_agent
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 

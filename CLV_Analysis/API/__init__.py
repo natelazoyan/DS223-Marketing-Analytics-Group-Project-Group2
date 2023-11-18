@@ -1,3 +1,3 @@
-from ..DB.schema import Sale, Property, Customer, Agent, Transaction, Date
+from ..DB.schema import Sale, Product, Customer, Transaction, Date
 from . import main
 from . import models 
