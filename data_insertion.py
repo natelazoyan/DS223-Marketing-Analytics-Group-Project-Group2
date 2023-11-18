@@ -2,8 +2,9 @@
 from CLV_Analysis.DB.sql_interactions import SqlHandler
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from CLV_Analysis.DB.schema import Sale 
+from CLV_Analysis.DB.schema import Sale
 
+#customer
 Inst=SqlHandler('temp', 'customer')
 
 
@@ -29,10 +30,10 @@ Inst1.insert_many(data1)
 Inst1.close_cnxn()
 
 #property
-Inst2=SqlHandler('temp', 'property')
+Inst2=SqlHandler('temp', 'product')
 
 import pandas as pd
-data2=pd.read_csv('data_csv/property.csv')
+data2=pd.read_csv('data_csv/product.csv')
 
 #Inst2.truncate_table()
 Inst2.insert_many(data2)
@@ -40,11 +41,12 @@ Inst2.insert_many(data2)
 
 Inst2.close_cnxn()
 
-#agent
-Inst3=SqlHandler('temp', 'agent')
+
+#date
+Inst3=SqlHandler('temp', 'date')
 
 import pandas as pd
-data3=pd.read_csv('data_csv/agent.csv')
+data3=pd.read_csv('data_csv/date.csv')
 
 #Inst3.truncate_table()
 Inst3.insert_many(data3)
@@ -52,19 +54,8 @@ Inst3.insert_many(data3)
 
 Inst3.close_cnxn()
 
-#date
-Inst4=SqlHandler('temp', 'date')
 
-import pandas as pd
-data4=pd.read_csv('data_csv/date.csv')
-
-#Inst4.truncate_table()
-Inst4.insert_many(data4)
-
-
-Inst4.close_cnxn()
-
-
+#Sale
 # Create a SQLAlchemy engine and session
 engine = create_engine('sqlite:///temp.db')
 Session = sessionmaker(bind=engine)
@@ -72,10 +63,10 @@ session = Session()
 
 import pandas as pd
 # Read CSV file into a list of dictionaries
-data5 = pd.read_csv('data_csv/sales.csv').to_dict(orient='records')
+data4 = pd.read_csv('data_csv/sales.csv').to_dict(orient='records')
 
 # Insert the sample data into the 'sales_fact' table
-for data in data5:
+for data in data4:
     sale = Sale(**data)
     session.add(sale)
 

@@ -1,7 +1,8 @@
 import faker
 from faker import Faker
+import faker_commerce
 faker.locale = "en_US"
-import pandas as pd
+import numpy as np
 import random
 import logging
 from ..Logger.logger import CustomFormatter
@@ -17,21 +18,17 @@ ch.setFormatter(CustomFormatter())
 logger.addHandler(ch)
 
 fake=Faker()
+fake.add_provider(faker_commerce.Provider)
 
 # Data Models
 
-def generate_property(property_id):
+def generate_product(product_id):
     return {
-        "property_id": property_id,
-        "property_type": fake.random_element(elements=("House", "Apartment", "Condo", "Townhouse", "Villa", "Cottage", "Duplex", "Penthouse", "Studio", "Loft")),
-        "country": fake.country(),
-        "city": fake.city(),
-        "street": fake.street_name(),
-        "building_number": fake.building_number(),
-        "square_footage": random.randint(300, 20000),
-        "number_of_bedrooms": random.randint(1, 10),
-        "number_of_bathrooms": random.randint(1, 10),
-        "year_built": random.randint(2000, 2023)
+        "product_id": product_id,
+        "SKU": fake.unique.hexify(text='^^^^^', upper=True),
+        "product_category": fake.ecommerce_category(),
+        "producer_country": fake.country(),
+        "price": round(random.uniform(1, 100), 2)
     }
 
 def generate_customer(customer_id):
@@ -52,29 +49,19 @@ def generate_customer(customer_id):
         "gender": fake.random_element(elements=("Female", "Male", "Prefer Not To Say", "Other"))
     }
 
-def generate_agent(agent_id):
-    return {
-        "agent_id": agent_id,
-        "agent_name": fake.first_name(), 
-        "agent_surname": fake.last_name(),
-        "email": fake.email(),
-        "phone": fake.phone_number(),
-        "experience_years": random.randint(0, 80)
-    }
 
 def generate_transaction(transaction_id):
     # Generate a random date between a specific date range
     start_date = datetime(2000, 1, 1)
     end_date = datetime(2023, 12, 31)
-    random_date = fake.date_time_between_dates(start_date, end_date)
+    random_date = fake.date_between_dates(start_date, end_date)
 
     return {
         "transaction_id": transaction_id,
-        "transaction_amount": round(random.uniform(80000, 2000000), 2),
-        "transaction_date": random_date,
-        "payment_method": fake.random_element(elements = ("Credit Card", "Debit Card", "Cash", "Online Transfer", "Check", "Mobile Payment"))
+        "date": random_date,
+        "payment_method": fake.random_element(elements = ("Credit Card", "Debit Card", "Cash", "Online Transfer", "Check", "Mobile Payment")),
+        "customer_id": np.random.randint(0, 3000)
     }
-
 
 def generate_date(date_id):
     
@@ -98,11 +85,8 @@ def generate_date(date_id):
     }
 
 
-def generate_sales(transaction_id, property_id, customer_id, agent_id, date_id):
+def generate_sales():
     return {
-        "transaction_id": transaction_id,
-        "property_id": property_id,
-        "customer_id": customer_id,
-        "agent_id": agent_id,
-        "date_id": date_id
+        "product_id": np.random.randint(0, 5000),
+        "quantity": np.random.randint(1, 20),
     }

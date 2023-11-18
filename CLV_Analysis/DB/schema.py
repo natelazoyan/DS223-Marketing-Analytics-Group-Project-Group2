@@ -17,23 +17,19 @@ logger.addHandler(ch)
 engine = create_engine('sqlite:///temp.db')
 Base = declarative_base()
 
-class Property(Base):
-    """Represents a property in the real estate system."""
-    __tablename__ = "property"
+class Product(Base):
+    """Represents a product in the company."""
+    __tablename__ = "product"
 
-    property_id = Column(Integer, primary_key=True)
-    property_type = Column(String)
-    country = Column(String)
-    city = Column(String)
-    street = Column(String)
-    building_number = Column(Integer)
-    square_footage = Column(Integer)
-    number_of_bedrooms = Column(Integer)
-    number_of_bathrooms = Column(Integer)
-    year_built = Column(Integer)
+    product_id = Column(Integer, primary_key=True)
+    SKU = Column(String)
+    product_category = Column(String)
+    producer_country = Column(String)
+    price = Column(Float)
+    
 
 class Customer(Base):
-    """Represents a customer in the real estate system."""
+    """Represents a customer in the company."""
     __tablename__ = "customer"
 
     customer_id = Column(Integer, primary_key=True)
@@ -48,28 +44,19 @@ class Customer(Base):
     birthday = Column(DateTime)
     gender = Column(String)
 
-class Agent(Base):
-    """Represents an agent in the real estate system."""
-    __tablename__ = "agent"
-
-    agent_id = Column(Integer, primary_key=True)
-    agent_name = Column(String)
-    agent_surname = Column(String)
-    email = Column(String)
-    phone = Column(String)
-    experience_years = Column(Integer)
-
 class Transaction(Base):
-    """Represents a transaction in the real estate system."""
+    """Represents a transaction in the company."""
     __tablename__ = "transactions"
 
     transaction_id = Column(Integer, primary_key=True)
-    transaction_amount = Column(Float)
-    transaction_date = Column(DateTime)
+    date = Column(DateTime)
     payment_method = Column(String)
 
+    customer_id = Column(Integer, ForeignKey('customer.customer_id'))
+    customers = relationship("Customer", backref="transactions")
+    
 class Date(Base):
-    """Represents a date in the real estate system."""
+    """Represents a date in the company."""
     __tablename__ = "date"
 
     date_id = Column(Integer, primary_key=True)
@@ -87,20 +74,19 @@ class Date(Base):
     
 
 class Sale(Base):
-    """Represents a sale in the real estate system."""
+    """Represents a sale in the company."""
     __tablename__ = "sales_fact"
 
     sales_id = Column(Integer, primary_key=True)
     transaction_id = Column(Integer, ForeignKey('transactions.transaction_id'))
-    property_id = Column(Integer, ForeignKey('property.property_id'))
+    product_id = Column(Integer, ForeignKey('product.product_id'))
     customer_id = Column(Integer, ForeignKey('customer.customer_id'))
-    agent_id = Column(Integer, ForeignKey('agent.agent_id'))
+    quantity = Column(Integer)
     date_id = Column(Integer, ForeignKey('date.date_id'))
 
     transaction = relationship("Transaction")
-    propertyy = relationship("Property")
+    product = relationship("Product")
     customer = relationship("Customer")
-    agent = relationship("Agent")
     date = relationship("Date")
 
 Base.metadata.create_all(engine)
