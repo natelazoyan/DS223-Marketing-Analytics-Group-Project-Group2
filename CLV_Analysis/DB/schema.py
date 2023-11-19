@@ -1,9 +1,7 @@
 import logging
-import os
-
 from ..Logger.logger import CustomFormatter
-
-from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, ForeignKey
+from sqlalchemy import create_engine
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -17,6 +15,7 @@ logger.addHandler(ch)
 engine = create_engine('sqlite:///temp.db')
 Base = declarative_base()
 
+
 class Product(Base):
     """Represents a product in the company."""
     __tablename__ = "product"
@@ -26,7 +25,7 @@ class Product(Base):
     product_category = Column(String)
     producer_country = Column(String)
     price = Column(Float)
-    
+
 
 class Customer(Base):
     """Represents a customer in the company."""
@@ -44,6 +43,7 @@ class Customer(Base):
     birthday = Column(DateTime)
     gender = Column(String)
 
+
 class Transaction(Base):
     """Represents a transaction in the company."""
     __tablename__ = "transactions"
@@ -54,7 +54,8 @@ class Transaction(Base):
 
     customer_id = Column(Integer, ForeignKey('customer.customer_id'))
     customers = relationship("Customer", backref="transactions")
-    
+
+
 class Date(Base):
     """Represents a date in the company."""
     __tablename__ = "date"
@@ -71,7 +72,7 @@ class Date(Base):
     day_of_week_name = Column(String)
     week_of_year = Column(Integer)
     week_of_month = Column(Integer)
-    
+
 
 class Sale(Base):
     """Represents a sale in the company."""
@@ -88,5 +89,6 @@ class Sale(Base):
     product = relationship("Product")
     customer = relationship("Customer")
     date = relationship("Date")
+
 
 Base.metadata.create_all(engine)

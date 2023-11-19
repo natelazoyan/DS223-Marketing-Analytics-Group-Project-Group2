@@ -2,20 +2,22 @@ from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
 
-
-
 # Pydantic models for database entities
+
+
 class ProductCreate(BaseModel):
     SKU: str
     product_category: str
     producer_country: str
     price: float
 
+
 class ProductUpdate(BaseModel):
     SKU: Optional[str] = None
     product_category: Optional[str] = None
     producer_country: Optional[str] = None
     price: Optional[float] = None
+
 
 class CustomerCreate(BaseModel):
     customer_name: str
@@ -28,6 +30,7 @@ class CustomerCreate(BaseModel):
     zip_code: str
     birthday: datetime
     gender: str
+
 
 class CustomerUpdate(BaseModel):
     customer_name: Optional[str] = None
@@ -47,10 +50,12 @@ class TransactionCreate(BaseModel):
     payment_method: str
     customer_id: int
 
+
 class TransactionUpdate(BaseModel):
     date: Optional[datetime] = None
     payment_method: Optional[str] = None
     customer_id: Optional[int] = None
+
 
 class DateCreate(BaseModel):
     date: datetime
@@ -65,6 +70,7 @@ class DateCreate(BaseModel):
     week_of_year: int
     week_of_month: int
 
+
 class DateUpdate(BaseModel):
     date: Optional[datetime] = None
     month: Optional[int] = None
@@ -78,12 +84,14 @@ class DateUpdate(BaseModel):
     week_of_year: Optional[int] = None
     week_of_month: Optional[int] = None
 
+
 class SalesFactCreate(BaseModel):
     transaction_id: int
     product_id: int
     customer_id: int
     quantity: int
     date_id: int
+
 
 class SalesFactUpdate(BaseModel):
     transaction_id: Optional[int] = None

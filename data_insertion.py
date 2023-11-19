@@ -3,65 +3,54 @@ from CLV_Analysis.DB.sql_interactions import SqlHandler
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from CLV_Analysis.DB.schema import Sale
-
-#customer
-Inst=SqlHandler('temp', 'customer')
-
-
 import pandas as pd
-data=pd.read_csv('data_csv/customer.csv')
 
-#Inst.truncate_table()
+# customer
+Inst = SqlHandler('temp', 'customer')
+
+data = pd.read_csv('data_csv/customer.csv')
+
+# Inst.truncate_table()
 Inst.insert_many(data)
-
 
 Inst.close_cnxn()
 
-#transaction
-Inst1=SqlHandler('temp', 'transactions')
+# transaction
+Inst1 = SqlHandler('temp', 'transactions')
 
-import pandas as pd
-data1=pd.read_csv('data_csv/transactions.csv')
+data1 = pd.read_csv('data_csv/transactions.csv')
 
-#Inst1.truncate_table()
+# Inst1.truncate_table()
 Inst1.insert_many(data1)
-
 
 Inst1.close_cnxn()
 
-#property
-Inst2=SqlHandler('temp', 'product')
+# property
+Inst2 = SqlHandler('temp', 'product')
 
-import pandas as pd
-data2=pd.read_csv('data_csv/product.csv')
+data2 = pd.read_csv('data_csv/product.csv')
 
-#Inst2.truncate_table()
+# Inst2.truncate_table()
 Inst2.insert_many(data2)
-
 
 Inst2.close_cnxn()
 
+# date
+Inst3 = SqlHandler('temp', 'date')
 
-#date
-Inst3=SqlHandler('temp', 'date')
+data3 = pd.read_csv('data_csv/date.csv')
 
-import pandas as pd
-data3=pd.read_csv('data_csv/date.csv')
-
-#Inst3.truncate_table()
+# Inst3.truncate_table()
 Inst3.insert_many(data3)
-
 
 Inst3.close_cnxn()
 
-
-#Sale
+# Sale
 # Create a SQLAlchemy engine and session
 engine = create_engine('sqlite:///temp.db')
 Session = sessionmaker(bind=engine)
 session = Session()
 
-import pandas as pd
 # Read CSV file into a list of dictionaries
 data4 = pd.read_csv('data_csv/sales.csv').to_dict(orient='records')
 

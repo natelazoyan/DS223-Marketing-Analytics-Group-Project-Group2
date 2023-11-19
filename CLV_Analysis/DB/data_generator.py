@@ -1,13 +1,13 @@
 import faker
 from faker import Faker
 import faker_commerce
-faker.locale = "en_US"
 import numpy as np
 import random
 import logging
 from ..Logger.logger import CustomFormatter
 from datetime import datetime, timedelta
 import os
+faker.locale = "en_US"
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -17,10 +17,11 @@ ch.setLevel(logging.DEBUG)
 ch.setFormatter(CustomFormatter())
 logger.addHandler(ch)
 
-fake=Faker()
+fake = Faker()
 fake.add_provider(faker_commerce.Provider)
 
 # Data Models
+
 
 def generate_product(product_id):
     return {
@@ -31,22 +32,24 @@ def generate_product(product_id):
         "price": round(random.uniform(1, 100), 2)
     }
 
+
 def generate_customer(customer_id):
     start_date = datetime(1923, 1, 1)
     end_date = datetime(2005, 12, 31)
     random_date = fake.date_time_between_dates(start_date, end_date)
     return {
-        "customer_id": customer_id,     
-        "customer_name": fake.first_name(),   
-        "customer_surname" : fake.last_name(), 
-        "email": fake.email(),   
+        "customer_id": customer_id,
+        "customer_name": fake.first_name(),
+        "customer_surname": fake.last_name(),
+        "email": fake.email(),
         "phone": fake.phone_number(),
-        "country":fake.country(),
+        "country": fake.country(),
         "city": fake.city(),
-        "address": fake.street_address(),  
-        "zip_code":  fake.zipcode(), 
-        "birthday":  random_date.strftime("%Y-%m-%d"),  
-        "gender": fake.random_element(elements=("Female", "Male", "Prefer Not To Say", "Other"))
+        "address": fake.street_address(),
+        "zip_code":  fake.zipcode(),
+        "birthday":  random_date.strftime("%Y-%m-%d"),
+        "gender": fake.random_element(elements=("Female", "Male",
+                                                "Prefer Not To Say", "Other"))
     }
 
 
@@ -59,15 +62,18 @@ def generate_transaction(transaction_id):
     return {
         "transaction_id": transaction_id,
         "date": random_date,
-        "payment_method": fake.random_element(elements = ("Credit Card", "Debit Card", "Cash", "Online Transfer", "Check", "Mobile Payment")),
+        "payment_method": fake.random_element(
+            elements=("Credit Card", "Debit Card",
+                      "Cash", "Online Transfer", "Check", "Mobile Payment")),
         "customer_id": np.random.randint(0, 3000)
     }
 
+
 def generate_date(date_id):
-    
+
     start_date = datetime(2000, 1, 1)
     current_date = start_date + timedelta(days=date_id)
-    
+
     # Extract date components
     return {
         "date_id": date_id,
